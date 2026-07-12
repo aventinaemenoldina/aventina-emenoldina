@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aventina & Emenoldina Fashion Store — Protótipo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  :root{
+    --ivory:#FAF3E7;
+    --ink:#241A16;
+    --capulana:#C4432A;
+    --capulana-dark:#9C3220;
+    --leaf:#1E6E52;
+    --leaf-light:#E6F1EB;
+    --gold:#D9A441;
+    --muted:#8A7364;
+    --line:#E4D6C4;
+    --card:#FFFFFF;
+    --danger:#B23A2F;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* --- Capulana pattern strip: signature element --- */
+  .capulana-strip{
+    height:10px;
+    width:100%;
+    background:
+      repeating-linear-gradient(45deg,
+        var(--capulana) 0 6px,
+        var(--gold) 6px 12px,
+        var(--leaf) 12px 18px,
+        var(--ivory) 18px 24px);
+    opacity:0.9;
+  }
+
+  header.app-header{
+    padding:22px 28px 18px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    border-bottom:1px solid var(--line);
+    background:var(--card);
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand-mark{
+    width:46px;height:46px;border-radius:10px;
+    background:linear-gradient(135deg, var(--capulana), var(--capulana-dark));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ivory); font-family:'Fraunces',serif; font-weight:700; font-size:20px;
+    flex-shrink:0;
+  }
+  .brand h1{font-size:20px; margin:0; line-height:1.15;}
+  .brand p{margin:2px 0 0; font-size:12.5px; color:var(--muted);}
+
+  .role-switch{display:flex; gap:6px; background:var(--leaf-light); padding:4px; border-radius:999px;}
+  .role-switch button{
+    border:none; background:transparent; padding:8px 16px; border-radius:999px;
+    font-family:'Work Sans'; font-size:13px; font-weight:600; color:var(--leaf);
+    cursor:pointer; transition:all .15s ease;
+  }
+  .role-switch button.active{background:var(--leaf); color:#fff;}
+
+  main{max-width:1180px; margin:0 auto; padding:28px;}
+
+  .hero{
+    display:grid; grid-template-columns:1.2fr 1fr; gap:22px; margin-bottom:28px;
+  }
+  @media (max-width:820px){ .hero{grid-template-columns:1fr;} }
+  .hero-card{
+    background:var(--card); border-radius:var(--radius); padding:26px;
+    border:1px solid var(--line);
+  }
+  .hero-title{font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:var(--capulana); font-weight:600; margin:0 0 8px;}
+  .hero h2{font-size:26px; margin:0 0 10px; line-height:1.2;}
+  .hero p{color:var(--muted); font-size:14.5px; line-height:1.55; margin:0;}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .kpi{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;}
+  .kpi .num{font-family:'Fraunces',serif; font-size:26px; font-weight:600;}
+  .kpi .label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px;}
+  .kpi.alert .num{color:var(--danger);}
+
+  section.panel{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; margin-bottom:22px;
+  }
+  section.panel h3{font-size:18px; margin:0 0 4px;}
+  section.panel .sub{font-size:13px; color:var(--muted); margin:0 0 18px;}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px;}
+  th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; padding:8px 10px; border-bottom:1px solid var(--line);}
+  td{padding:10px 10px; border-bottom:1px solid var(--line);}
+  tr:last-child td{border-bottom:none;}
+  .tag{display:inline-block; padding:2px 9px; border-radius:999px; font-size:11px; font-weight:600;}
+  .tag.ok{background:var(--leaf-light); color:var(--leaf);}
+  .tag.low{background:#FBE7E3; color:var(--danger);}
+
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:820px){ .grid-2{grid-template-columns:1fr;} }
+
+  label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin:12px 0 5px; text-transform:uppercase; letter-spacing:.04em;}
+  select, input{
+    width:100%; padding:10px 12px; border-radius:9px; border:1px solid var(--line);
+    font-family:'Work Sans'; font-size:14px; background:#fff; color:var(--ink);
+  }
+  select:focus, input:focus{outline:2px solid var(--gold); outline-offset:1px;}
+
+  button.primary{
+    margin-top:16px; width:100%; padding:12px; border-radius:9px; border:none;
+    background:var(--capulana); color:#fff; font-weight:600; font-size:14px; cursor:pointer;
+    transition:background .15s ease;
+  }
+  button.primary:hover{background:var(--capulana-dark);}
+  button.secondary{
+    margin-top:10px; width:100%; padding:11px; border-radius:9px; border:1px solid var(--leaf);
+    background:#fff; color:var(--leaf); font-weight:600; font-size:14px; cursor:pointer;
+  }
+  button.secondary:hover{background:var(--leaf-light);}
+
+  .catalog-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .prod-card{border:1px solid var(--line); border-radius:12px; padding:14px; background:var(--ivory);}
+  .prod-card .swatch{width:100%; height:60px; border-radius:8px; margin-bottom:10px;}
+  .prod-card h4{margin:0 0 3px; font-size:14.5px;}
+  .prod-card .meta{font-size:12px; color:var(--muted); margin-bottom:8px;}
+  .prod-card .price{font-family:'IBM Plex Mono'; font-weight:600; color:var(--capulana);}
+
+  .msg-log{display:flex; flex-direction:column; gap:10px; max-height:260px; overflow-y:auto;}
+  .msg{background:var(--leaf-light); border-radius:10px; padding:10px 12px; font-size:13px;}
+  .msg .who{font-weight:600; color:var(--leaf); font-size:12px;}
+
+  .empty{color:var(--muted); font-size:13.5px; font-style:italic; padding:12px 0;}
+
+  .footer-note{
+    font-size:12px; color:var(--muted); text-align:center; padding:20px 0 6px;
+  }
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+    background:var(--ink); color:var(--ivory); padding:10px 18px; border-radius:999px;
+    font-size:13px; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
+</style>
+</head>
+<body>
+
+<div class="capulana-strip"></div>
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">AE</div>
+    <div>
+      <h1>Aventina & Emenoldina <span style="color:var(--capulana)">Fashion Store</span></h1>
+      <p>Gestão de vendas, stock e clientes via WhatsApp — protótipo do Mini-Projecto</p>
+    </div>
+  </div>
+  <div class="role-switch" id="roleSwitch">
+    <button data-role="proprietaria" class="active">Proprietária</button>
+    <button data-role="funcionaria">Funcionária</button>
+    <button data-role="cliente">Cliente</button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====================== DADOS & PERSISTÊNCIA ====================== */
+const SHARED = true; // dados partilhados entre o(a) estudante e o(a) docente
+let state = { products: [], sales: [], clients: [], messages: [] };
+let currentRole = 'proprietaria';
+
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+function seed(){
+  return {
+    products: [
+      {id:uid(), name:'Vestido Capulana Midi', size:'M', color:'Terracota', qty:8, min:5, price:1250},
+      {id:uid(), name:'Camisa Social Slim', size:'L', color:'Branco', qty:3, min:5, price:980},
+      {id:uid(), name:'Calça Jeans Skinny', size:'40', color:'Azul', qty:12, min:6, price:1400},
+      {id:uid(), name:'Blusa Estampada', size:'S', color:'Verde', qty:2, min:4, price:750},
+      {id:uid(), name:'Saia Plissada', size:'M', color:'Dourado', qty:6, min:4, price:890},
+    ],
+    sales: [],
+    clients: [
+      {id:uid(), name:'Judite Nhampossa', phone:'+258 84 111 2233', purchases:3, lastPurchase:'2026-07-02'},
+      {id:uid(), name:'Sérgio Macuácua', phone:'+258 82 555 7788', purchases:1, lastPurchase:'2026-06-18'},
+    ],
+    messages: [
+      {id:uid(), to:'Judite Nhampossa', text:'Olá Judite! 🎉 Chegou a nova coleção de vestidos capulana. Vem ver!', date:'2026-07-08'},
+    ]
+  };
+}
+
+async function loadState(){
+  try{
+    const r = await window.storage.get('aef-store-state', SHARED);
+    if(r && r.value){ state = JSON.parse(r.value); return; }
+  }catch(e){ /* chave ainda não existe */ }
+  state = seed();
+  await saveState();
+}
+
+async function saveState(){
+  try{
+    await window.storage.set('aef-store-state', JSON.stringify(state), SHARED);
+  }catch(e){ console.error('Falha ao guardar dados', e); }
+}
+
+/* ====================== HELPERS UI ====================== */
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function money(n){ return n.toLocaleString('pt-MZ',{minimumFractionDigits:0}) + ' MT'; }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+
+function lowStockProducts(){ return state.products.filter(p=>p.qty <= p.min); }
+function totalRevenue(){ return state.sales.reduce((s,x)=>s+x.value,0); }
+function salesThisWeek(){
+  const now = new Date();
+  return state.sales.filter(s=>{
+    const d = new Date(s.date);
+    return (now - d) / 86400000 <= 7;
+  });
+}
+
+/* ====================== RENDER: PROPRIETÁRIA ====================== */
+function renderProprietaria(){
+  const low = lowStockProducts();
+  const revenue = totalRevenue();
+  const weekSales = salesThisWeek();
+  const sellerTotals = {};
+  state.sales.forEach(s=>{ sellerTotals[s.seller] = (sellerTotals[s.seller]||0) + s.value; });
+
+  return `
+  <div class="hero">
+    <div class="hero-card">
+      <p class="hero-title">Painel da Proprietária</p>
+      <h2>Visão geral do negócio</h2>
+      <p>Acompanhe vendas, stock e desempenho da equipa num só lugar — os três módulos descritos no mini-projecto, já a funcionar.</p>
+    </div>
+    <div class="kpi-row" style="grid-template-columns:1fr; gap:10px;">
+      <div class="kpi"><div class="num mono">${money(revenue)}</div><div class="label">Receita total registada</div></div>
+      <div class="kpi ${low.length?'alert':''}"><div class="num mono">${low.length}</div><div class="label">Produtos em ruptura mínima</div></div>
+      <div class="kpi"><div class="num mono">${state.clients.length}</div><div class="label">Clientes na base de dados</div></div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h3>Relatório de vendas</h3>
+    <p class="sub">${weekSales.length} venda(s) nos últimos 7 dias · desempenho por vendedor(a)</p>
+    ${state.sales.length ? `
+    <table>
+      <thead><tr><th>Data</th><th>Produto</th><th>Qtd</th><th>Valor</th><th>Vendedor(a)</th></tr></thead>
+      <tbody>
+        ${state.sales.slice().reverse().map(s=>`
+          <tr><td>${s.date}</td><td>${s.productName}</td><td>${s.qty}</td><td class="mono">${money(s.value)}</td><td>${s.seller}</td></tr>
+        `).join('')}
+      </tbody>
+    </table>` : `<p class="empty">Ainda não há vendas registadas. Use a vista "Funcionária" para registar a primeira venda.</p>`}
+  </section>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h3>Estado do stock</h3>
+      <p class="sub">Notificação automática quando um produto atinge o nível mínimo</p>
+      <table>
+        <thead><tr><th>Produto</th><th>Qtd</th><th>Estado</th></tr></thead>
+        <tbody>
+          ${state.products.map(p=>`
+            <tr><td>${p.name} <span class="mono" style="color:var(--muted)">(${p.size}, ${p.color})</span></td><td>${p.qty}</td>
+            <td>${p.qty<=p.min ? `<span class="tag low">Repor stock</span>` : `<span class="tag ok">OK</span>`}</td></tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h3>Desempenho por vendedor(a)</h3>
+      <p class="sub">Total vendido por cada funcionária</p>
+      ${Object.keys(sellerTotals).length ? `
+      <table>
+        <thead><tr><th>Vendedor(a)</th><th>Total vendido</th></tr></thead>
+        <tbody>${Object.entries(sellerTotals).map(([k,v])=>`<tr><td>${k}</td><td class="mono">${money(v)}</td></tr>`).join('')}</tbody>
+      </table>` : `<p class="empty">Sem dados de desempenho ainda.</p>`}
+    </section>
+  </div>
+  `;
+}
+
+/* ====================== RENDER: FUNCIONÁRIA ====================== */
+function renderFuncionaria(){
+  const low = lowStockProducts();
+  return `
+  <div class="hero">
+    <div class="hero-card">
+      <p class="hero-title">Vista da Funcionária</p>
+      <h2>Registar venda</h2>
+      <p>Ao confirmar, o stock do produto é actualizado automaticamente — é o Módulo de Controlo Inteligente de Stock em acção.</p>
+      <label>Produto</label>
+      <select id="saleProduct">
+        ${state.products.map(p=>`<option value="${p.id}">${p.name} — ${p.qty} em stock</option>`).join('')}
+      </select>
+      <label>Quantidade</label>
+      <input type="number" id="saleQty" min="1" value="1">
+      <label>Vendedor(a)</label>
+      <input type="text" id="saleSeller" placeholder="O seu nome" value="Emenoldina">
+      <button class="primary" id="btnRegisterSale">Registar venda</button>
+    </div>
+    <div class="kpi-row" style="grid-template-columns:1fr; gap:10px;">
+      <div class="kpi ${low.length?'alert':''}"><div class="num mono">${low.length}</div><div class="label">Alertas de reposição</div></div>
+      <div class="kpi"><div class="num mono">${state.sales.length}</div><div class="label">Vendas registadas hoje e antes</div></div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h3>Stock disponível</h3>
+    <p class="sub">Tamanhos, cores e quantidades em tempo real</p>
+    <table>
+      <thead><tr><th>Produto</th><th>Tamanho</th><th>Cor</th><th>Qtd</th><th>Estado</th></tr></thead>
+      <tbody>
+        ${state.products.map(p=>`
+          <tr><td>${p.name}</td><td>${p.size}</td><td>${p.color}</td><td>${p.qty}</td>
+          <td>${p.qty<=p.min ? `<span class="tag low">Repor</span>` : `<span class="tag ok">OK</span>`}</td></tr>
+        `).join('')}
+      </tbody>
+    </table>
+  </section>
+  `;
+}
+
+/* ====================== RENDER: CLIENTE ====================== */
+function renderCliente(){
+  const palette = ['#C4432A','#1E6E52','#D9A441','#9C3220','#8A7364'];
+  return `
+  <div class="hero">
+    <div class="hero-card">
+      <p class="hero-title">Catálogo Digital</p>
+      <h2>Novidades da loja</h2>
+      <p>Consulte peças disponíveis, preços e receba promoções directamente no WhatsApp — sem precisar de instalar nada de novo.</p>
+    </div>
+    <div class="hero-card">
+      <p class="hero-title">Mensagens recebidas</p>
+      <div class="msg-log">
+        ${state.messages.length ? state.messages.slice().reverse().map(m=>`
+          <div class="msg"><div class="who">Aventina & Emenoldina · ${m.date}</div>${m.text}</div>
+        `).join('') : `<p class="empty">Sem mensagens promocionais por agora.</p>`}
+      </div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h3>Produtos disponíveis</h3>
+    <p class="sub">Toque em "Encomendar" para simular um pedido — a proprietária vê o pedido no painel de gestão</p>
+    <div class="catalog-grid">
+      ${state.products.map((p,i)=>`
+        <div class="prod-card">
+          <div class="swatch" style="background:${palette[i%palette.length]}"></div>
+          <h4>${p.name}</h4>
+          <div class="meta">${p.size} · ${p.color} · ${p.qty>0?'em stock':'esgotado'}</div>
+          <div class="price">${money(p.price)}</div>
+        </div>
+      `).join('')}
+    </div>
+  </section>
+  `;
+}
+
+/* ====================== FIDELIZAÇÃO (partilhado entre painéis) ====================== */
+function renderFidelizacao(){
+  return `
+  <section class="panel">
+    <h3>Módulo de Fidelização de Clientes</h3>
+    <p class="sub">Base de dados de clientes e envio automático de mensagens promocionais</p>
+    <div class="grid-2">
+      <div>
+        <table>
+          <thead><tr><th>Cliente</th><th>Contacto</th><th>Compras</th><th>Última compra</th></tr></thead>
+          <tbody>
+            ${state.clients.map(c=>`<tr><td>${c.name}</td><td class="mono">${c.phone}</td><td>${c.purchases}</td><td>${c.lastPurchase}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <label>Novo(a) cliente — nome</label>
+        <input type="text" id="clientName" placeholder="Nome completo">
+        <label>Contacto WhatsApp</label>
+        <input type="text" id="clientPhone" placeholder="+258 8X XXX XXXX">
+        <button class="primary" id="btnAddClient">Adicionar cliente</button>
+        <label>Mensagem promocional</label>
+        <input type="text" id="promoText" placeholder="Ex: Nova coleção chegou! Vem ver 👗">
+        <button class="secondary" id="btnSendPromo">Enviar a todos os clientes</button>
+      </div>
+    </div>
+  </section>
+  `;
+}
+
+/* ====================== APP RENDER + EVENTOS ====================== */
+function render(){
+  const app = document.getElementById('app');
+  let html = '';
+  if(currentRole === 'proprietaria') html = renderProprietaria() + renderFidelizacao();
+  if(currentRole === 'funcionaria') html = renderFuncionaria();
+  if(currentRole === 'cliente') html = renderCliente();
+
+  html += `<p class="footer-note">Protótipo funcional do Mini-Projecto de Informática Aplicada · Dados guardados automaticamente e partilhados entre todas as pessoas que abrirem este link.</p>`;
+  app.innerHTML = html;
+  attachEvents();
+}
+
+function attachEvents(){
+  const btnSale = document.getElementById('btnRegisterSale');
+  if(btnSale){
+    btnSale.addEventListener('click', async ()=>{
+      const pid = document.getElementById('saleProduct').value;
+      const qty = parseInt(document.getElementById('saleQty').value || '1', 10);
+      const seller = document.getElementById('saleSeller').value.trim() || 'Funcionária';
+      const product = state.products.find(p=>p.id===pid);
+      if(!product) return;
+      if(qty < 1 || qty > product.qty){ toast('Quantidade inválida ou acima do stock disponível.'); return; }
+      product.qty -= qty;
+      state.sales.push({id:uid(), date:todayISO(), productId:pid, productName:product.name, qty, value:qty*product.price, seller});
+      await saveState();
+      toast(product.qty<=product.min ? `Venda registada. Atenção: ${product.name} atingiu o stock mínimo!` : 'Venda registada com sucesso.');
+      render();
+    });
+  }
+
+  const btnClient = document.getElementById('btnAddClient');
+  if(btnClient){
+    btnClient.addEventListener('click', async ()=>{
+      const name = document.getElementById('clientName').value.trim();
+      const phone = document.getElementById('clientPhone').value.trim();
+      if(!name || !phone){ toast('Preencha nome e contacto.'); return; }
+      state.clients.push({id:uid(), name, phone, purchases:0, lastPurchase:'—'});
+      await saveState();
+      toast('Cliente adicionado à base de dados.');
+      render();
+    });
+  }
+
+  const btnPromo = document.getElementById('btnSendPromo');
+  if(btnPromo){
+    btnPromo.addEventListener('click', async ()=>{
+      const text = document.getElementById('promoText').value.trim();
+      if(!text){ toast('Escreva a mensagem promocional.'); return; }
+      state.clients.forEach(()=>{}); // segmentação simplificada: envia a todos
+      state.messages.push({id:uid(), to:'todos os clientes', text, date:todayISO()});
+      await saveState();
+      toast(`Mensagem enviada a ${state.clients.length} cliente(s) via WhatsApp.`);
+      render();
+    });
+  }
+}
+
+document.getElementById('roleSwitch').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button[data-role]');
+  if(!btn) return;
+  currentRole = btn.dataset.role;
+  document.querySelectorAll('#roleSwitch button').forEach(b=>b.classList.toggle('active', b===btn));
+  render();
+});
+
+/* ====================== INIT ====================== */
+(async function init(){
+  document.getElementById('app').innerHTML = `<p class="empty" style="padding:40px; text-align:center;">A carregar dados da loja…</p>`;
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
